@@ -107,11 +107,12 @@
   }
 
   /* ── Hero — RTL: نص على اليمين في كل المقاسات من 530px لفوق ── */
+  /* html[dir="rtl"] prefix: glass.css (bundled after this block) sets flex-end */
   @media (min-width: 530px) {
-    .hero-wrapper {
+    html[dir="rtl"] .hero-wrapper {
       justify-content: flex-start;
     }
-    .hero-overlay {
+    html[dir="rtl"] .hero-overlay {
       background: linear-gradient(
         to left,
         rgba(0,0,0,0.72) 0%,
