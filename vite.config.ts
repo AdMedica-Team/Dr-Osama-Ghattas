@@ -168,7 +168,19 @@ function vitePluginPublicPlatformConfig(): Plugin {
   };
 }
 
-const plugins = [vitePluginPublicPlatformConfig(), react(), tailwindcss(), jsxLocPlugin(), vitePluginManusDebugCollector()];
+// The plain (non-module) scripts in client/assets/js are not bundled by Vite, so they are copied as they are;
+// without this the live site answered 404 for them (the English booking form did nothing).
+function vitePluginCopyPlainScripts(): Plugin {
+  return {
+    name: "copy-plain-scripts",
+    apply: "build",
+    writeBundle(options) {
+      fs.cpSync(path.resolve(PROJECT_ROOT, "client/assets/js"), path.join(options.dir!, "assets/js"), { recursive: true });
+    },
+  };
+}
+
+const plugins = [vitePluginPublicPlatformConfig(), react(), tailwindcss(), jsxLocPlugin(), vitePluginManusDebugCollector(), vitePluginCopyPlainScripts()];
 
 export default defineConfig({
   plugins,
